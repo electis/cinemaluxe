@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, re_path
 
-from HelloDjango import views
+from cinemaluxe import views
 
 
 urlpatterns = [
