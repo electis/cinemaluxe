@@ -1,5 +1,4 @@
 from django.db import models
-from django.conf import settings
 
 
 def next_order():
@@ -10,7 +9,7 @@ def next_order():
 
 
 class Menu(models.Model):
-    logo = models.FileField(upload_to=settings.MEDIA_ROOT, verbose_name="Лого")
+    logo = models.FileField(upload_to='', verbose_name="Лого")
     items = models.ManyToManyField('MenuItem', verbose_name="Пункты меню", blank=True)
 
     class Meta:
