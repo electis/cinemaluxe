@@ -2,4 +2,5 @@
 *.pyc
 *.log
 *.pem
+*.sqlite3
 secret*
