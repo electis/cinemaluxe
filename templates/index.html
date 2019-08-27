@@ -60,7 +60,7 @@
                             {% if item.btn_left %}icon-position-left{% else %}icon-position-right{% endif %}"></i></a>
                         {% endif %}
                     </div>
-                    <img src="/static/images/{{ item.img.file }}" alt="screen">
+                    <img src="{{ item.img.url }}" alt="screen">
                 </div>
             {% endfor %}
         </div>

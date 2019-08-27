@@ -110,6 +110,6 @@ if DEBUG:
     STATICFILES_DIRS = (os.path.join(BASE_DIR, '..', 'public_html', 'static'),)
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, '..', 'public_html', 'static')
+    MEDIA_URL = '/static/images/'
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'public_html', 'static', 'images')
-MEDIA_URL = '/static/images/'
