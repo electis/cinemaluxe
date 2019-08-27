@@ -8,16 +8,18 @@ def next_order():
         return 1
 
 
-class Menu(models.Model):
-    logo = models.FileField(upload_to='', verbose_name="Лого")
-    items = models.ManyToManyField('MenuItem', verbose_name="Пункты меню", blank=True)
+class Site(models.Model):
+    title = models.CharField(max_length=255, default='', verbose_name="Заголовок вкладки")
+    keywords = models.CharField(max_length=255, default='', verbose_name="Ключевые слова")
+    description = models.CharField(max_length=255, default='', verbose_name="Описание")
+    logo = models.ImageField(upload_to='', null=True, verbose_name="Лого")
 
     class Meta:
-        verbose_name = "Меню"
-        verbose_name_plural = "Меню"
+        verbose_name = "Сайт"
+        verbose_name_plural = "0 Сайт"
 
     def __str__(self):
-        return 'Меню'
+        return f'{self.title}'
 
 
 class MenuItem(models.Model):
@@ -27,8 +29,42 @@ class MenuItem(models.Model):
 
     class Meta:
         verbose_name = "Пункт меню"
-        verbose_name_plural = "Пункты меню"
-        ordering = ('order',)
+        verbose_name_plural = "1 Пункты меню"
+        ordering = ('order', 'name')
 
     def __str__(self):
         return f'{self.name}'
+
+
+class BannerItem(models.Model):
+    img = models.ImageField(upload_to='', null=True, verbose_name="Картинка")
+    name = models.CharField(max_length=255, default='', verbose_name="Заголовок H1")
+    mark = models.BooleanField(default=False, verbose_name="Заголовок выделен")
+    text = models.CharField(max_length=255, default='', verbose_name="Текст H4")
+    btn = models.CharField(max_length=255, default='', verbose_name="Кнопка название")
+    btn_url = models.CharField(max_length=255, default='', verbose_name="Кнопка ссылка")
+    btn_left = models.BooleanField(default=False, verbose_name="Кнопка иконка слева")
+    order = models.IntegerField(default=1, verbose_name="Порядок вывода")
+    top = models.BooleanField(default=False, verbose_name="Текст сверху")
+    center = models.BooleanField(default=True, null=True, verbose_name="Текст по центру (None - слева)")
+
+    class Meta:
+        verbose_name = "Баннер"
+        verbose_name_plural = "2 Баннеры"
+        ordering = ('order', 'name')
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+class Description(models.Model):
+    before = models.CharField(max_length=255, default='', verbose_name="Перед крупным")
+    big = models.CharField(max_length=255, default='', verbose_name="Крупный")
+    mini = models.CharField(max_length=255, default='', verbose_name="Мелкий")
+
+    class Meta:
+        verbose_name = "Описание"
+        verbose_name_plural = "3 Описание"
+
+    def __str__(self):
+        return 'Описание'

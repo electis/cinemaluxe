@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>index</title>
+    <title>{{ site.title }}</title>
 
-    <meta name="keywords" content=""/>
-    <meta name="description" content=""/>
+    <meta name="keywords" content="{{ site.keywords }}"/>
+    <meta name="description" content="{{ site.description }}"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script src="/static/js/fonts.js"></script>
@@ -19,16 +19,14 @@
 <body class="light-page">
 <nav id="nav-fluid-logo-menu-drop" class="navbar light">
     <div class="container-fluid">
-
         <div class="navbar-header" style="position: absolute;">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"><span
                     class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-            <div class="navbar-brand"><img src="/static/images/{{ menu.logo }}" alt="Your logo"></div>
+            <div class="navbar-brand"><img src="/static/images/{{ site.logo.file }}" alt="Your logo"></div>
         </div>
-
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                {% for item in menu.items.all %}
+                {% for item in menu %}
                     <li><a href="{{ item.url }}"><span>{{ item.name }}</span></a></li>
                 {% endfor %}
             </ul>
@@ -38,90 +36,56 @@
 </nav>
 <div id="wrap">
     <section id="header-fluid-carousel-single" class="light">
-
         <div class="carousel-single-nav cover-slider owl-drag">
-            <div class="item">
-                <div class="desc-top text-center">
-                    <h1>
-                        <mark>&nbsp;<strong>Limited</strong> Offer&nbsp;</mark>
-                    </h1>
-                    <h4 class="mb-40">In our work we try to use only the most modern, <br>convenient and interesting
-                        solutions</h4>
-                    <a href="#" class="btn btn-default"><span>Details</span><i
-                            class="icon-arrow-down icon-size-m icon-position-right"></i></a>
+            {% for item in banner %}
+                <div class="item">
+                    <div class="{% if item.top %}desc-top{% else %}desc-bottom{% endif %}
+                            {% if item.center %}text-center{% elif item.center == False %}text-right{% endif %}">
+                        {% if item.name %}
+                            <h1>
+                                {% if item.mark %}
+                                    <mark>{{ item.name }}</mark>
+                                {% else %}
+                                    {{ item.name }}
+                                {% endif %}
+                            </h1>
+                        {% endif %}
+                        {% if item.text %}
+                            <h4 class="mb-40">{{ item.text }}</h4>
+                        {% endif %}
+                        {% if item.btn %}
+                            <a href="{{ item.btn_url }}" class="btn btn-default{% if not item.top %} mb-50{% endif %}">
+                                <span>{{ item.btn }}</span><i
+                                    class="icon-arrow-down icon-size-m
+                            {% if item.btn_left %}icon-position-left{% else %}icon-position-right{% endif %}"></i></a>
+                        {% endif %}
+                    </div>
+                    <img src="/static/images/{{ item.img.file }}" alt="screen">
                 </div>
-                <img src="/static/images/bg-32.jpg" alt="screen">
-            </div>
-            <div class="item">
-                <div class="desc-top text-right">
-                    <h1>Limited Offer</h1>
-                    <h4 class="mb-40">In our work we try to use only the most modern, <br>convenient and interesting
-                        solutions</h4>
-                    <a href="#" class="btn btn-default"><i
-                            class="icon-arrow-down icon-size-m icon-position-left"></i><span>Details</span></a>
-                </div>
-                <img src="/static/images/bg-33.jpg" alt="screen">
-            </div>
-            <div class="item">
-                <div class="desc-bottom text-center">
-                    <h1><strong>Limited</strong> Offer</h1>
-                    <h4 class="mb-40">In our work we try to use only the most modern, <br>convenient and interesting
-                        solutions</h4>
-                    <a href="#" class="btn btn-default mb-50"><i
-                            class="icon-arrow-down icon-size-m icon-position-left"></i><span>Details</span></a>
-                </div>
-                <img src="/static/images/bg-34.jpg" alt="screen">
-            </div>
-            <div class="item">
-                <div class="desc-top">
-                    <h1><strong>Limited Offer</strong></h1>
-                    <h4 class="mb-40">In our work we try to use only the most modern, <br>convenient and interesting
-                        solutions</h4>
-                    <a href="#" class="btn btn-default"><i
-                            class="icon-arrow-down icon-size-m icon-position-left"></i><span>Details</span></a>
-                </div>
-                <img src="/static/images/bg-35.jpg" alt="screen">
-            </div>
-            <div class="item">
-                <div class="desc-bottom">
-                    <h1>
-                        <mark>&nbsp;Limited Offer&nbsp;</mark>
-                    </h1>
-                    <h4 class="mb-40">In our work we try to use only the most modern, <br>convenient and interesting
-                        solutions</h4>
-                    <a href="#" class="btn btn-default mb-50"><i
-                            class="icon-arrow-down icon-size-m icon-position-left"></i><span>Details</span></a>
-                </div>
-                <img src="/static/images/bg-36.jpg" alt="screen">
-            </div>
-            <div class="item">
-                <div class="desc-bottom text-right">
-                    <h1>Limited Offer</h1>
-                    <h4 class="mb-40">In our work we try to use only the most modern, <br>convenient and interesting
-                        solutions</h4>
-                    <a href="#" class="btn btn-default mb-50"><i
-                            class="icon-arrow-down icon-size-m icon-position-left"></i><span>Details</span></a>
-                </div>
-                <img src="/static/images/bg-37.jpg" alt="screen">
-            </div>
+            {% endfor %}
         </div>
-
         <div class="bg"></div>
     </section>
+    {% if description %}
     <section id="action-center-text" class="pt-150 pb-150 text-center light">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h4>Special offer</h4>
-                    <h2><strong>Shop has launched a new promotion <br>on all
-                        <mark>2016 collection</mark>
-                    </strong></h2>
-                    <p class="desc-text">Available within 2 weeks</p>
+                    {% if description.before %}
+                        <h4>{{ description.before }}</h4>
+                    {% endif %}
+                    {% if description.big %}
+                        <h2><strong>{{ description.big }}</strong></h2>
+                    {% endif %}
+                    {% if description.mini %}
+                        <p class="desc-text">{{ description.mini }}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
         <div class="bg"></div>
     </section>
+    {% endif %}
 </div>
 <footer></footer>
 <div class="modal-container"></div>
