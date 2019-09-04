@@ -8,9 +8,20 @@ from django.http import HttpResponseRedirect
 
 
 @admin.register(models.Site)
-class MenuLogoAdmin(SingleModelAdmin):
+class SiteAdmin(SingleModelAdmin):
     pass
 
+@admin.register(models.Gallery)
+class GalleryAdmin(SingleModelAdmin):
+    pass
+
+@admin.register(models.Group)
+class GroupAdmin(SingleModelAdmin):
+    pass
+
+@admin.register(models.Description)
+class DescriptionAdmin(SingleModelAdmin):
+    pass
 
 @admin.register(models.MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
@@ -48,7 +59,6 @@ class MenuItemAdmin(admin.ModelAdmin):
     menu_actions.short_description = 'Изменить порядок'
     menu_actions.allow_tags = True
 
-
 @admin.register(models.BannerItem)
 class BannerItemAdmin(admin.ModelAdmin):
     list_display = ('name', 'order', 'menu_actions',)
@@ -85,10 +95,41 @@ class BannerItemAdmin(admin.ModelAdmin):
     menu_actions.short_description = 'Изменить порядок'
     menu_actions.allow_tags = True
 
+@admin.register(models.GroupItem)
+class GroupItemAdmin(admin.ModelAdmin):
+    list_display = ('name', 'order', 'menu_actions',)
 
-@admin.register(models.Description)
-class DescriptionAdmin(SingleModelAdmin):
-    pass
+    def order_plus(self, request, pk, *args, **kwargs):
+        obj = models.GroupItem.objects.get(pk=pk)
+        obj.order += 1
+        obj.save()
+        return HttpResponseRedirect('/admin/cinemaluxe/groupitem/')
+
+    def order_minus(self, request, pk, *args, **kwargs):
+        obj = models.GroupItem.objects.get(pk=pk)
+        if obj.order > 1:
+            obj.order -= 1
+            obj.save()
+        return HttpResponseRedirect('/admin/cinemaluxe/groupitem/')
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            re_path(r'^(?P<pk>.+)/plus/$',  self.admin_site.admin_view(self.order_plus),  name='order-plus',),
+            re_path(r'^(?P<pk>.+)/minus/$', self.admin_site.admin_view(self.order_minus), name='order-minus',),
+        ]
+        return custom_urls + urls
+
+    def menu_actions(self, obj):
+        return format_html(
+            '<a class="button" href="{}">&minus;</a>&nbsp;'
+            '<a class="button" href="{}">&plus;</a>',
+            reverse('admin:order-minus', args=[obj.pk]),
+            reverse('admin:order-plus', args=[obj.pk]),
+        )
+
+    menu_actions.short_description = 'Изменить порядок'
+    menu_actions.allow_tags = True
 
 
 model_list = apps.get_models()

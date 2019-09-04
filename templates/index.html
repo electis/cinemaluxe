@@ -1,41 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ site.title }}</title>
-
-    <meta name="keywords" content="{{ site.keywords }}"/>
-    <meta name="description" content="{{ site.description }}"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
-    <script src="/static/js/fonts.js"></script>
-    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
-    <link rel="stylesheet" href="/static/css/icons.css"/>
-    <link rel="stylesheet" href="/static/css/style.css"/>
-    <link rel="stylesheet" href="/static/css/owl.carousel.css"/>
-    <link rel="stylesheet" href="/static/css/custom.css"/>
-    <link rel="stylesheet" href="/static/css/index.css"/>
-</head>
-<body class="light-page">
-<nav id="nav-fluid-logo-menu-drop" class="navbar light">
-    <div class="container-fluid">
-        <div class="navbar-header" style="position: absolute;">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"><span
-                    class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-            <div class="navbar-brand"><img src="{{ site.logo.url }}" alt="Your logo"></div>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                {% for item in menu %}
-                    <li><a href="{{ item.url }}"><span>{{ item.name }}</span></a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <div class="nav-bg light"></div>
-</nav>
-<div id="wrap">
-    <section id="header-fluid-carousel-single" class="light">
+{% extends "main.html" %}
+{% block main %}
+    <section id="header-fluid-carousel-single" class="dark">
         <div class="carousel-single-nav cover-slider owl-drag">
             {% for item in banner %}
                 <div class="item">
@@ -44,59 +9,150 @@
                         {% if item.name %}
                             <h1>
                                 {% if item.mark %}
-                                    <mark>{{ item.name }}</mark>
+                                    <mark>{{ item.name|safe }}</mark>
                                 {% else %}
-                                    {{ item.name }}
+                                    <strong>{{ item.name|safe }}</strong>
                                 {% endif %}
                             </h1>
                         {% endif %}
                         {% if item.text %}
-                            <h4 class="mb-40">{{ item.text }}</h4>
+                            <h4 class="mb-40">{{ item.text|safe }}</h4>
                         {% endif %}
                         {% if item.btn %}
-                            <a href="{{ item.btn_url }}" class="btn btn-default{% if not item.top %} mb-50{% endif %}">
+                            <a href="/static/{{ item.btn_url }}"
+                               class="btn btn-default{% if not item.top %} mb-50{% endif %}">
                                 <span>{{ item.btn }}</span><i
                                     class="icon-arrow-down icon-size-m
                             {% if item.btn_left %}icon-position-left{% else %}icon-position-right{% endif %}"></i></a>
                         {% endif %}
                     </div>
-                    <img src="{{ item.img.url }}" alt="screen">
+                    <img src="/static/{{ item.img.url }}" alt="screen">
                 </div>
             {% endfor %}
         </div>
         <div class="bg"></div>
     </section>
     {% if description %}
-    <section id="action-center-text" class="pt-150 pb-150 text-center light">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    {% if description.before %}
-                        <h4>{{ description.before }}</h4>
-                    {% endif %}
-                    {% if description.big %}
-                        <h2><strong>{{ description.big }}</strong></h2>
-                    {% endif %}
-                    {% if description.mini %}
-                        <p class="desc-text">{{ description.mini }}</p>
-                    {% endif %}
+        <section id="action-center-text" class="pt-50 pb-50 text-center light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if description.before %}
+                            <h4>{{ description.before|safe }}</h4>
+                        {% endif %}
+                        {% if description.big %}
+                            <h2><strong>{{ description.big|safe }}</strong></h2>
+                        {% endif %}
+                        {% if description.mini %}
+                            <p class="desc-text">{{ description.mini|safe }}</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="bg"></div>
-    </section>
+            <div class="bg"></div>
+        </section>
     {% endif %}
-</div>
-<footer></footer>
-<div class="modal-container"></div>
+    {% if group or group_list %}
+        <section id="desc-card-3col" class="pt-75 pb-100 text-center light">
+            <div class="container">
+                {% if group %}
+                    <h2>{{ group.big }}</h2>
+                    <h3 class="mb-75">{{ group.mini }}</h3>
+                {% endif %}
+                {% if group_list %}
+                    <div class="row">
+                        {% for item in group_list %}
+                            <div class="col-md-4 mb-50">
+                                <div class="card light" style="background-color:#fff;">
+                                    <img src="/static/{{ item.img.url }}" alt="{{ item.img }}"
+                                         class="card-img-top">
+                                    <div class="card-block padding-box">
+                                        <h3><strong>{{ item.name }}</strong></h3>
+                                        <p class="mb-30">{{ item.text }}</p>
+                                        <a class="btn btn-default" href="/group/{{ item.pk }}">
+                                            <span>Перейти</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="bg"></div>
+        </section>
+    {% endif %}
+    {% if gallery %}
+        <section id="gallery-fluid-carousel-single" class="pt-75 pb-75 text-center light">
+            <div class="container">
+                <h2 class="mb-50">{{ gallery.big }}</h2>
+                <div class="carousel-single-nav gallery owl-drag">
+                    {% for item in gallery_list %}
+                        <a href="/static/{{ item.img.url }}" class="item gallery-box gallery-style-4">
+                            <span class="caption"><strong>{{ item.name }}</strong></span>
+                            <img src="/static/{{ item.img.url }}" alt="screen">
+                        </a>
+                    {% endfor %}
+                </div>
+                <p class="mt-50">{{ gallery.text }}</p>
+                <a href="{{ gallery.btn_url }}" class="btn btn-default mt-25"><span>{{ gallery.btn }}</span></a>
+            </div>
+            <div class="bg"></div>
+        </section>
+    {% endif %}
 
+{% endblock %}
 
-<script src="/static/js/jquery-2.1.4.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/owl.carousel.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCByts0vn5uAYat3aXEeK0yWL7txqfSMX8"></script>
-<script src="https://cdn.jsdelivr.net/jquery.goodshare.js/3.2.8/goodshare.min.js"></script>
-<script src="/static/js/custom.js"></script>
-<script src="/static/js/index.js"></script>
-</body>
-</html>
+{#    <section id="desc-img-text-3col-3" class="pt-100 pb-100 light">#}
+{#        <div class="container">#}
+{#            {% if group %}#}
+{#                <h2 class="mb-50"><strong>{{ group.big }}</strong></h2>#}
+{#            {% endif %}#}
+{#            <div class="row">#}
+{#                {% for item in group_list %}#}
+{#                    <div class="col-md-4">#}
+{#                        <div class="card padding-box border-box">#}
+{#                            <img src="/static/{{ item.img.url }}" alt="{{ item.img }}" class="card-img">#}
+{#                            <div class="card-block">#}
+{#                                <h4 class="mt-20 mb-0"><strong>{{ item.name }}</strong></h4>#}
+{#                                <p class="mb-15 desc-text">{{ item.text }}</p>#}
+{#                                <ul class="text-icon-list text-icon-list-sep">#}
+{#                                    {% for field in item.field_many.all %}#}
+{#                                        <li class="clearfix"><i#}
+{#                                                class="icon-{{ field.icon }} icon-color icon-size-m icon-position-left"></i>#}
+{#                                            <span class="spr-option-textedit-link">{{ field.name }}</span>#}
+{#                                            <span class="spr-option-textedit-link pull-right">{{ field.text }}</span>#}
+{#                                        </li>#}
+{#                                    {% endfor %}#}
+{#                                </ul>#}
+{#                                <a href="#" class="btn btn-sm btn-default mt-25"><i#}
+{#                                        class="icon-plus icon-position-left"></i><span class="spr-option-textedit-link">More info</span></a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="bg"></div>#}
+{#    </section>#}
+{#    <section id="desc-card-3col-2" class="dark pt-50 pb-50 text-center">#}
+{#        <div class="container">#}
+{#            <h2 class=""><strong>New Look</strong></h2>#}
+{#            <h3 class="mb-75">Posts and photos from the most interesting places</h3>#}
+{#            <div class="row">#}
+{#                {% for item in group_list %}#}
+{#                    <div class="col-md-4">#}
+{#                        <div class="card light">#}
+{#                            <img src="/static/{{ item.img.url }}" class="card-img" alt="">#}
+{#                            <div class="card-img-overlay-bottom">#}
+{#                                <h4 class="">Technology</h4>#}
+{#                                <p class="mb-20">Emotions that causes your project in visitor are no less important#}
+{#                                    ticket to success</p>#}
+{#                                <a class="btn btn-default btn-sm" href="#"><span>Read more</span></a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="bg"></div>#}
+{#    </section>#}

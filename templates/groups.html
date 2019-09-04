@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block main %}
+    {% if group or group_list %}
+        <section id="desc-card-3col" class="pt-125 pb-150 text-center light">
+            <div class="container">
+                {% if group %}
+                    <h2>{{ group.big }}</h2>
+                    <h3 class="mb-75">{{ group.mini }}</h3>
+                {% endif %}
+                {% if group_list %}
+                    <div class="row">
+                        {% for item in group_list %}
+                            <div class="col-md-4">
+                                <div class="card light" style="background-color:#fff;">
+                                    <img src="/static/{{ item.img.url }}" alt="{{ item.img }}"
+                                         class="card-img-top">
+                                    <div class="card-block padding-box">
+                                        <h3><strong>{{ item.name }}</strong></h3>
+                                        <p class="mb-30">{{ item.text }}</p>
+                                        <a class="btn btn-default" href="/group/{{ item.pk }}">
+                                            <span>Перейти</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="bg"></div>
+        </section>
+    {% endif %}
+{% endblock %}

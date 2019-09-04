@@ -1,0 +1,33 @@
+{% extends "main.html" %}
+{% block main %}
+    <section id="desc-img-text-3col-3" class="pt-100 pb-100 light">
+        <div class="container">
+            <h2 class="mb-50"><strong>{{ group_item.name }}</strong></h2>
+            <div class="row">
+                {% for item in product_list %}
+                    <div class="col-md-4">
+                        <div class="card padding-box border-box">
+                            <img src="/static/{{ item.img.url }}" alt="{{ item.img }}" class="card-img">
+                            <div class="card-block">
+                                <h4 class="mt-20 mb-0"><strong>{{ item.name }}</strong></h4>
+                                <p class="mb-15 desc-text">{{ item.text }}</p>
+                                <ul class="text-icon-list text-icon-list-sep">
+                                    {% for field in item.field_many.all %}
+                                        <li class="clearfix"><i
+                                                class="icon-{{ field.icon }} icon-color icon-size-m icon-position-left"></i>
+                                            <span class="spr-option-textedit-link">{{ field.name }}</span>
+                                            <span class="spr-option-textedit-link pull-right">{{ field.text }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                <a href="#" class="btn btn-sm btn-default mt-25"><i
+                                        class="icon-plus icon-position-left"></i><span class="spr-option-textedit-link">More info</span></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="bg"></div>
+    </section>
+{% endblock %}

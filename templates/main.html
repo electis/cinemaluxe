@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ site.title }}</title>
+    <meta name="keywords" content="{{ site.keywords }}"/>
+    <meta name="description" content="{{ site.description }}"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
+    <script src="/static/js/fonts.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/icons.css"/>
+    <link rel="stylesheet" href="/static/css/style.css"/>
+    <link rel="stylesheet" href="/static/css/owl.carousel.css"/>
+    <link rel="stylesheet" href="/static/css/custom.css"/>
+    <link rel="stylesheet" href="/static/css/index.css"/>
+</head>
+<body class="light-page">
+<nav id="nav-fluid-logo-menu-drop" class="navbar light">
+    <div class="container-fluid">
+        <div class="navbar-header" style="position: absolute;">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"><span
+                    class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            <div class="navbar-brand"><a href="/"><img src="/static/{{ site.logo.url }}" alt="{{ site.title }}"></a></div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                {% for item in menu %}
+                    <li><a href="{{ item.url }}"><span>{{ item.name }}</span></a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="nav-bg light"></div>
+</nav>
+<div id="wrap">
+    {% block main %}{% endblock %}
+</div>
+<footer></footer>
+<div class="modal-container"></div>
+<script src="/static/js/jquery-2.1.4.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/owl.carousel.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCByts0vn5uAYat3aXEeK0yWL7txqfSMX8"></script>
+<script src="https://cdn.jsdelivr.net/jquery.goodshare.js/3.2.8/goodshare.min.js"></script>
+<script src="/static/js/custom.js"></script>
+<script src="/static/js/index.js"></script>
+</body>
+</html>
