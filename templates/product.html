@@ -1,0 +1,62 @@
+{% extends "main.html" %}
+{% load thumbnail %}
+{% block main %}
+    <section id="desc-img-text-list" class="pt-150 pb-150 light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-push-8">
+                    <h2 class="mb-10"><strong>{{ product.name }}</strong></h2>
+                    <h4 class="mb-50">{{ product.text }}</h4>
+                    <p class="mb-20">{{ product.description }}</p>
+                    <ul class="text-icon-list text-icon-list-sep">
+                        {% for field in product.field_many.all %}
+                            <li class="clearfix"><i
+                                    class="icon-{{ field.icon }} icon-color icon-size-m icon-position-left"></i>
+                                <span>{{ field.name }}</span>
+                                <span class="pull-right">{{ field.text }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <a href="#" class="btn btn-default mt-60"><span>Заказать сейчас</span><i
+                            class="icon-arrow-right icon-position-right"></i></a>
+                    <div class="mt-25">
+                        <h4>Группы продукта:</h4>
+                        <a href="/group/{{ product.group.pk }}">{{ product.group.name }}</a>
+                        {% for group in product.group_many.all %}
+                            <a href="/group/{{ group.pk }}">{{ group.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="screen" class="col-md-8 col-md-pull-4 text-center">
+                    <img src="/static/{{ product.img.url }}" alt="{{ product.img }}" class="screen">
+                </div>
+                <div class="col-md-8 col-md-pull-4 mt-30 text-center">
+                    {% thumbnail product.img "x50" crop="center" as im %}
+                        <img id="thumb-0" style="cursor: pointer; margin-right: 10px; outline: 3px solid #00C0FF;"
+                             src="/static/{{ im.url }}" alt="{{ product.img }}" height="{{ im.height }}"
+                             onclick="load_img(this, '{{ product.img.url }}')">
+                    {% endthumbnail %}
+                    {% for img in product.img_many.all %}
+                        {% thumbnail img.img "x50" crop="center" as im %}
+                            <img id="thumb-{{ forloop.counter }}" style="cursor: pointer; margin-right: 10px"
+                                 src="/static/{{ im.url }}"
+                                 alt="{{ img.img }}" height="{{ im.height }}"
+                                 onclick="load_img(this, '{{ img.img.url }}')">
+                        {% endthumbnail %}
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+        <div class="bg"></div>
+    </section>
+    <script>
+        function load_img(elem, url, id = 'screen') {
+            document.getElementById(id).innerHTML = `<img src="/static/${url}" alt="${url}" class="screen">`;
+            for (var i = 0; i <= {{ product.img_many.count }}; i++) {
+                document.getElementById('thumb-' + i).style.outline = "";
+            }
+            elem.style.outline = "3px solid #00C0FF";
+        }
+    </script>
+{% endblock %}

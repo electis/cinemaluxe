@@ -8,5 +8,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('group/<int:pk>', views.GroupView.as_view()),
     path('groups/', views.GroupsView.as_view()),
+    path('product/<int:pk>', views.ProductView.as_view()),
     re_path(r'^', views.MainView.as_view()),
 ]

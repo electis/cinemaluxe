@@ -1,4 +1,5 @@
 {% extends "main.html" %}
+{% load thumbnail %}
 {% block main %}
     <section id="header-fluid-carousel-single" class="dark">
         <div class="carousel-single-nav cover-slider owl-drag">
@@ -64,8 +65,10 @@
                         {% for item in group_list %}
                             <div class="col-md-4 mb-50">
                                 <div class="card light" style="background-color:#fff;">
-                                    <img src="/static/{{ item.img.url }}" alt="{{ item.img }}"
-                                         class="card-img-top">
+                                    {% thumbnail item.img "350x350" crop="center" as im %}
+                                        <img src="/static/{{ im.url }}" alt="{{ item.img }}"
+                                             class="card-img-top">
+                                    {% endthumbnail %}
                                     <div class="card-block padding-box">
                                         <h3><strong>{{ item.name }}</strong></h3>
                                         <p class="mb-30">{{ item.text }}</p>

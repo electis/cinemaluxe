@@ -23,6 +23,11 @@ class GroupAdmin(SingleModelAdmin):
 class DescriptionAdmin(SingleModelAdmin):
     pass
 
+@admin.register(models.ImageItem)
+class ImageItemAdmin(admin.ModelAdmin):
+    list_display = ('desc', 'image50_tag', 'order')
+    readonly_fields = ['image_tag']
+
 @admin.register(models.MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
     list_display = ('name', 'order', 'menu_actions',)

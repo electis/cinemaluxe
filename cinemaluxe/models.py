@@ -3,6 +3,7 @@ from PIL import Image as Img
 from PIL import ExifTags
 from io import BytesIO
 from django.core.files import File
+from sorl.thumbnail import ImageField
 
 
 def next_order():
@@ -121,15 +122,17 @@ class GroupItem(models.Model):
 
 
 class ProductItem(models.Model):
-    img = models.ImageField(upload_to='', null=True, verbose_name="Основная картинка")
+    img = ImageField(upload_to='', null=True, verbose_name="Основная картинка")
     name = models.CharField(max_length=255, default='', verbose_name="Название")
-    text = models.CharField(max_length=255, default='', verbose_name="Текст")
+    text = models.CharField(max_length=255, default='', verbose_name="Краткое описание")
+    description = models.TextField(default='', verbose_name="Подробное описание")
     order = models.IntegerField(default=product_order, verbose_name="Порядок вывода")
     group = models.ForeignKey(GroupItem, on_delete=models.SET_NULL, null=True,
                               verbose_name="Основная группа товара", related_name="product")
-    group_many = models.ManyToManyField(GroupItem,
+    group_many = models.ManyToManyField(GroupItem, blank=True,
                                         verbose_name="Дополнительные группы товара", related_name="product_many")
-    field_many = models.ManyToManyField('FieldItem', verbose_name="Параметры товара")
+    field_many = models.ManyToManyField('FieldItem', verbose_name="Параметры товара", blank=True)
+    img_many = models.ManyToManyField('ImageItem', verbose_name="Изображения товара", blank=True)
 
     class Meta:
         verbose_name = "Товар"
@@ -156,6 +159,31 @@ class FieldItem(models.Model):
         return self.desc
 
 
+class ImageItem(models.Model):
+    desc = models.CharField(max_length=255, default='', verbose_name="Внутреннее описание")
+    name = models.CharField(max_length=255, default='', verbose_name="Название", blank=True)
+    img = ImageField(upload_to='', null=True, verbose_name="Картинка")
+    order = models.IntegerField(default=1, verbose_name="Порядок вывода")
+
+    class Meta:
+        verbose_name = "Изображение товара"
+        verbose_name_plural = "8 Изображения товаров"
+        ordering = ('order', 'name')
+
+    def image_tag(self):
+        from django.utils.safestring import mark_safe
+        return mark_safe(f'<img src="/static/images/{self.img}" height="200px" />')
+    image_tag.short_description = 'Image'
+
+    def image50_tag(self):
+        from django.utils.safestring import mark_safe
+        return mark_safe(f'<img src="/static/images/{self.img}" height="50px" />')
+    image_tag.short_description = 'Image50'
+
+    def __str__(self):
+        return self.desc
+
+
 class Gallery(models.Model):
     big = models.CharField(max_length=255, default='', verbose_name="Заголовок")
     text = models.CharField(max_length=255, default='', verbose_name="Текст после")
@@ -164,7 +192,7 @@ class Gallery(models.Model):
 
     class Meta:
         verbose_name = "Заголовок галереи"
-        verbose_name_plural = "8 Заголовок галереи"
+        verbose_name_plural = "9 Заголовок галереи"
 
     def __str__(self):
         return 'Заголовок галереи'
@@ -177,7 +205,7 @@ class GalleryItem(models.Model):
 
     class Meta:
         verbose_name = "Фото галереи"
-        verbose_name_plural = "9 Фото галереи"
+        verbose_name_plural = "10 Фото галереи"
         ordering = ('order', 'name')
 
     def __str__(self):
