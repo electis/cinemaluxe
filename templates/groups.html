@@ -1,4 +1,5 @@
 {% extends "main.html" %}
+{% load thumbnail %}
 {% block main %}
     {% if group or group_list %}
         <section id="desc-card-3col" class="pt-125 pb-150 text-center light">
@@ -10,10 +11,12 @@
                 {% if group_list %}
                     <div class="row">
                         {% for item in group_list %}
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-50">
                                 <div class="card light" style="background-color:#fff;">
-                                    <img src="/static/{{ item.img.url }}" alt="{{ item.img }}"
-                                         class="card-img-top">
+                                    {% thumbnail item.img "350x350" crop="center" as im %}
+                                        <img src="/static/{{ im.url }}" alt="{{ item.img }}"
+                                             class="card-img-top">
+                                    {% endthumbnail %}
                                     <div class="card-block padding-box">
                                         <h3><strong>{{ item.name }}</strong></h3>
                                         <p class="mb-30">{{ item.text }}</p>

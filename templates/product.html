@@ -27,25 +27,27 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div id="screen" class="col-md-8 col-md-pull-4 text-center">
-                    <img src="/static/{{ product.img.url }}" alt="{{ product.img }}" class="screen">
-                </div>
-                <div class="col-md-8 col-md-pull-4 mt-30 text-center">
-                    {% thumbnail product.img "x50" crop="center" as im %}
-                        <img id="thumb-0" style="cursor: pointer; margin-right: 10px; outline: 3px solid #00C0FF;"
-                             src="/static/{{ im.url }}" alt="{{ product.img }}" height="{{ im.height }}"
-                             onclick="load_img(this, '{{ product.img.url }}')">
-                    {% endthumbnail %}
-                    {% for img in product.img_many.all %}
-                        {% thumbnail img.img "x50" crop="center" as im %}
-                            <img id="thumb-{{ forloop.counter }}" style="cursor: pointer; margin-right: 10px"
-                                 src="/static/{{ im.url }}"
-                                 alt="{{ img.img }}" height="{{ im.height }}"
-                                 onclick="load_img(this, '{{ img.img.url }}')">
+                <div class="col-md-8 col-md-pull-4 text-center">
+                    <div id="screen">
+                        <img src="/static/{{ product.img.url }}" alt="{{ product.img }}" class="screen">
+                    </div>
+                    <div class="mt-30">
+                        {% thumbnail product.img "x50" crop="center" as im %}
+                            <img id="thumb-0" style="cursor: pointer; margin-right: 10px; outline: 3px solid #00C0FF;"
+                                 src="/static/{{ im.url }}" alt="{{ product.img }}" height="{{ im.height }}"
+                                 onclick="load_img(this, '{{ product.img.url }}')">
                         {% endthumbnail %}
-                    {% endfor %}
-                </div>
+                        {% for img in product.img_many.all %}
+                            {% thumbnail img.img "x50" crop="center" as im %}
+                                <img id="thumb-{{ forloop.counter }}" style="cursor: pointer; margin-right: 10px"
+                                     src="/static/{{ im.url }}"
+                                     alt="{{ img.img }}" height="{{ im.height }}"
+                                     onclick="load_img(this, '{{ img.img.url }}')">
+                            {% endthumbnail %}
+                        {% endfor %}
 
+                    </div>
+                </div>
             </div>
         </div>
         <div class="bg"></div>

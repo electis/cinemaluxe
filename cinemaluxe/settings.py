@@ -63,12 +63,7 @@ WSGI_APPLICATION = 'cinemaluxe.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+from cinemaluxe.secrets import DATABASES
 
 
 # Password validation
@@ -114,5 +109,5 @@ if DEBUG:
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, '..', 'public_html', 'static')
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'public_html', 'static', 'images')
-    MEDIA_URL = '/static/images/'
+    MEDIA_URL = 'images/'
 STATIC_URL = '/static/'

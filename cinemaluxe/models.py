@@ -4,7 +4,10 @@ from PIL import ExifTags
 from io import BytesIO
 from django.core.files import File
 from sorl.thumbnail import ImageField
+from pytils import translit
 
+def get_image_path(self, filename):
+    return translit.slugify(filename)
 
 def next_order():
     try:
@@ -35,7 +38,7 @@ class Site(models.Model):
     title = models.CharField(max_length=255, default='', verbose_name="Заголовок вкладки")
     keywords = models.CharField(max_length=255, default='', verbose_name="Ключевые слова")
     description = models.CharField(max_length=255, default='', verbose_name="Описание")
-    logo = models.ImageField(upload_to='', null=True, verbose_name="Лого")
+    logo = models.ImageField(upload_to=get_image_path, null=True, verbose_name="Лого")
 
     class Meta:
         verbose_name = "Сайт"
@@ -60,7 +63,7 @@ class MenuItem(models.Model):
 
 
 class BannerItem(models.Model):
-    img = models.ImageField(upload_to='', null=True, verbose_name="Картинка")
+    img = models.ImageField(upload_to=get_image_path, null=True, verbose_name="Картинка")
     name = models.CharField(max_length=255, default='', verbose_name="Заголовок H1")
     mark = models.BooleanField(default=False, verbose_name="Заголовок выделен")
     text = models.CharField(max_length=255, default='', verbose_name="Текст H4")
@@ -106,10 +109,9 @@ class Group(models.Model):
 
 
 class GroupItem(models.Model):
-    img = models.ImageField(upload_to='', null=True, verbose_name="Картинка")
-    name = models.CharField(max_length=255, default='', verbose_name="Название H4")
-    text = models.CharField(max_length=255, default='', verbose_name="Текст")
-    light = models.BooleanField(default=False, verbose_name="Картинка светлая")
+    img = models.ImageField(upload_to=get_image_path, null=True, verbose_name="Картинка")
+    name = models.CharField(max_length=255, default='', verbose_name="Название H4", blank=True)
+    text = models.CharField(max_length=255, default='', verbose_name="Текст", blank=True)
     order = models.IntegerField(default=group_order, verbose_name="Порядок вывода")
 
     class Meta:
@@ -122,12 +124,12 @@ class GroupItem(models.Model):
 
 
 class ProductItem(models.Model):
-    img = ImageField(upload_to='', null=True, verbose_name="Основная картинка")
+    img = ImageField(upload_to=get_image_path, null=True, verbose_name="Основная картинка")
     name = models.CharField(max_length=255, default='', verbose_name="Название")
-    text = models.CharField(max_length=255, default='', verbose_name="Краткое описание")
-    description = models.TextField(default='', verbose_name="Подробное описание")
+    text = models.CharField(max_length=255, default='', verbose_name="Краткое описание", blank=True)
+    description = models.TextField(default='', verbose_name="Подробное описание", blank=True)
     order = models.IntegerField(default=product_order, verbose_name="Порядок вывода")
-    group = models.ForeignKey(GroupItem, on_delete=models.SET_NULL, null=True,
+    group = models.ForeignKey(GroupItem, on_delete=models.SET_NULL, null=True, blank=True,
                               verbose_name="Основная группа товара", related_name="product")
     group_many = models.ManyToManyField(GroupItem, blank=True,
                                         verbose_name="Дополнительные группы товара", related_name="product_many")
@@ -152,7 +154,7 @@ class FieldItem(models.Model):
 
     class Meta:
         verbose_name = "Параметр товара"
-        verbose_name_plural = "7 Параметры товаров"
+        verbose_name_plural = "Параметры товаров"
         ordering = ('order', 'name')
 
     def __str__(self):
@@ -162,12 +164,12 @@ class FieldItem(models.Model):
 class ImageItem(models.Model):
     desc = models.CharField(max_length=255, default='', verbose_name="Внутреннее описание")
     name = models.CharField(max_length=255, default='', verbose_name="Название", blank=True)
-    img = ImageField(upload_to='', null=True, verbose_name="Картинка")
+    img = ImageField(upload_to=get_image_path, null=True, verbose_name="Картинка")
     order = models.IntegerField(default=1, verbose_name="Порядок вывода")
 
     class Meta:
         verbose_name = "Изображение товара"
-        verbose_name_plural = "8 Изображения товаров"
+        verbose_name_plural = "Изображения товаров"
         ordering = ('order', 'name')
 
     def image_tag(self):
@@ -192,20 +194,20 @@ class Gallery(models.Model):
 
     class Meta:
         verbose_name = "Заголовок галереи"
-        verbose_name_plural = "9 Заголовок галереи"
+        verbose_name_plural = "7 Заголовок галереи"
 
     def __str__(self):
         return 'Заголовок галереи'
 
 
 class GalleryItem(models.Model):
-    img = models.ImageField(upload_to='', null=True, verbose_name="Картинка")
+    img = models.ImageField(upload_to=get_image_path, null=True, verbose_name="Картинка")
     name = models.CharField(max_length=255, default='', verbose_name="Текст при наведении")
     order = models.IntegerField(default=1, verbose_name="Порядок вывода")
 
     class Meta:
         verbose_name = "Фото галереи"
-        verbose_name_plural = "10 Фото галереи"
+        verbose_name_plural = "Фото галереи"
         ordering = ('order', 'name')
 
     def __str__(self):

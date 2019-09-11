@@ -6,14 +6,12 @@
             {% for item in banner %}
                 <div class="item">
                     <div class="{% if item.top %}desc-top{% else %}desc-bottom{% endif %}
-                            {% if item.center %}text-center{% elif item.center == False %}text-right{% endif %}">
+                                {% if item.center %}text-center{% elif item.center == False %}text-right{% endif %}"
+                         {% if item.mark %}style="background-color: #00000050;"{% endif %}>
                         {% if item.name %}
                             <h1>
-                                {% if item.mark %}
-                                    <mark>{{ item.name|safe }}</mark>
-                                {% else %}
-                                    <strong>{{ item.name|safe }}</strong>
-                                {% endif %}
+                                {# {% if item.mark %}<mark>{{ item.name|safe }}</mark> #}
+                                <strong>{{ item.name|safe }}</strong>
                             </h1>
                         {% endif %}
                         {% if item.text %}
@@ -102,60 +100,4 @@
             <div class="bg"></div>
         </section>
     {% endif %}
-
 {% endblock %}
-
-{#    <section id="desc-img-text-3col-3" class="pt-100 pb-100 light">#}
-{#        <div class="container">#}
-{#            {% if group %}#}
-{#                <h2 class="mb-50"><strong>{{ group.big }}</strong></h2>#}
-{#            {% endif %}#}
-{#            <div class="row">#}
-{#                {% for item in group_list %}#}
-{#                    <div class="col-md-4">#}
-{#                        <div class="card padding-box border-box">#}
-{#                            <img src="/static/{{ item.img.url }}" alt="{{ item.img }}" class="card-img">#}
-{#                            <div class="card-block">#}
-{#                                <h4 class="mt-20 mb-0"><strong>{{ item.name }}</strong></h4>#}
-{#                                <p class="mb-15 desc-text">{{ item.text }}</p>#}
-{#                                <ul class="text-icon-list text-icon-list-sep">#}
-{#                                    {% for field in item.field_many.all %}#}
-{#                                        <li class="clearfix"><i#}
-{#                                                class="icon-{{ field.icon }} icon-color icon-size-m icon-position-left"></i>#}
-{#                                            <span class="spr-option-textedit-link">{{ field.name }}</span>#}
-{#                                            <span class="spr-option-textedit-link pull-right">{{ field.text }}</span>#}
-{#                                        </li>#}
-{#                                    {% endfor %}#}
-{#                                </ul>#}
-{#                                <a href="#" class="btn btn-sm btn-default mt-25"><i#}
-{#                                        class="icon-plus icon-position-left"></i><span class="spr-option-textedit-link">More info</span></a>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="bg"></div>#}
-{#    </section>#}
-{#    <section id="desc-card-3col-2" class="dark pt-50 pb-50 text-center">#}
-{#        <div class="container">#}
-{#            <h2 class=""><strong>New Look</strong></h2>#}
-{#            <h3 class="mb-75">Posts and photos from the most interesting places</h3>#}
-{#            <div class="row">#}
-{#                {% for item in group_list %}#}
-{#                    <div class="col-md-4">#}
-{#                        <div class="card light">#}
-{#                            <img src="/static/{{ item.img.url }}" class="card-img" alt="">#}
-{#                            <div class="card-img-overlay-bottom">#}
-{#                                <h4 class="">Technology</h4>#}
-{#                                <p class="mb-20">Emotions that causes your project in visitor are no less important#}
-{#                                    ticket to success</p>#}
-{#                                <a class="btn btn-default btn-sm" href="#"><span>Read more</span></a>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="bg"></div>#}
-{#    </section>#}
