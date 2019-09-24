@@ -105,9 +105,9 @@ USE_TZ = True
 if DEBUG:
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
     MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'images')
-    MEDIA_URL = 'images/'
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, '..', 'public_html', 'static')
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'public_html', 'static', 'images')
-    MEDIA_URL = 'images/'
+
+MEDIA_URL = 'images/'
 STATIC_URL = '/static/'

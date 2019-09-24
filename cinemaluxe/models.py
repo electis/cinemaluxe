@@ -1,10 +1,13 @@
-from django.db import models
 from PIL import Image as Img
 from PIL import ExifTags
 from io import BytesIO
-from django.core.files import File
 from sorl.thumbnail import ImageField
 from pytils import translit
+
+from django.db import models
+from django.core.files import File
+from django.utils.safestring import mark_safe
+
 
 def get_image_path(self, filename):
     return translit.slugify(filename)
@@ -82,6 +85,26 @@ class BannerItem(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    def save(self, *args, **kwargs):
+        if self.img and (self.img.name.endswith('.jpg') or self.img.name.endswith('.jpeg')):
+            pilImage = Img.open(BytesIO(self.img.read()))
+            orientation = 0
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(pilImage._getexif().items())
+            if exif[orientation] == 3:
+                pilImage = pilImage.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                pilImage = pilImage.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                pilImage = pilImage.rotate(90, expand=True)
+            output = BytesIO()
+            pilImage.save(output, format='JPEG', quality=75)
+            output.seek(0)
+            self.img = File(output, self.img.name)
+        return super(BannerItem, self).save(*args, **kwargs)
+
 
 class Description(models.Model):
     before = models.CharField(max_length=255, default='', verbose_name="Перед крупным")
@@ -122,8 +145,32 @@ class GroupItem(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if self.img and (self.img.name.endswith('.jpg') or self.img.name.endswith('.jpeg')):
+            pilImage = Img.open(BytesIO(self.img.read()))
+            orientation = 0
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(pilImage._getexif().items())
+            if exif[orientation] == 3:
+                pilImage = pilImage.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                pilImage = pilImage.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                pilImage = pilImage.rotate(90, expand=True)
+            output = BytesIO()
+            pilImage.save(output, format='JPEG', quality=75)
+            output.seek(0)
+            self.img = File(output, self.img.name)
+        return super(GroupItem, self).save(*args, **kwargs)
+
 
 class ProductItem(models.Model):
+    class Meta:
+        verbose_name = "Товар"
+        verbose_name_plural = "6 Товары"
+        ordering = ('order', 'name')
     img = ImageField(upload_to=get_image_path, null=True, verbose_name="Основная картинка")
     name = models.CharField(max_length=255, default='', verbose_name="Название")
     text = models.CharField(max_length=255, default='', verbose_name="Краткое описание", blank=True)
@@ -136,13 +183,31 @@ class ProductItem(models.Model):
     field_many = models.ManyToManyField('FieldItem', verbose_name="Параметры товара", blank=True)
     img_many = models.ManyToManyField('ImageItem', verbose_name="Изображения товара", blank=True)
 
-    class Meta:
-        verbose_name = "Товар"
-        verbose_name_plural = "6 Товары"
-        ordering = ('order', 'name')
-
     def __str__(self):
         return f'{self.name}'
+
+    def colors(self):
+        return self.img_many.filter(color__isnull=False)
+
+    def save(self, *args, **kwargs):
+        if self.img and (self.img.name.endswith('.jpg') or self.img.name.endswith('.jpeg')):
+            pilImage = Img.open(BytesIO(self.img.read()))
+            orientation = 0
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(pilImage._getexif().items())
+            if exif[orientation] == 3:
+                pilImage = pilImage.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                pilImage = pilImage.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                pilImage = pilImage.rotate(90, expand=True)
+            output = BytesIO()
+            pilImage.save(output, format='JPEG', quality=75)
+            output.seek(0)
+            self.img = File(output, self.img.name)
+        return super(ProductItem, self).save(*args, **kwargs)
 
 
 class FieldItem(models.Model):
@@ -166,6 +231,8 @@ class ImageItem(models.Model):
     name = models.CharField(max_length=255, default='', verbose_name="Название", blank=True)
     img = ImageField(upload_to=get_image_path, null=True, verbose_name="Картинка")
     order = models.IntegerField(default=1, verbose_name="Порядок вывода")
+    color = models.ForeignKey('ColorItem', on_delete=models.SET_NULL, null=True, blank=True,
+                              verbose_name="Цвет товара")
 
     class Meta:
         verbose_name = "Изображение товара"
@@ -173,22 +240,40 @@ class ImageItem(models.Model):
         ordering = ('order', 'name')
 
     def image_tag(self):
-        from django.utils.safestring import mark_safe
         return mark_safe(f'<img src="/static/images/{self.img}" height="200px" />')
     image_tag.short_description = 'Image'
 
     def image50_tag(self):
-        from django.utils.safestring import mark_safe
         return mark_safe(f'<img src="/static/images/{self.img}" height="50px" />')
-    image_tag.short_description = 'Image50'
+    image50_tag.short_description = 'Image50'
 
     def __str__(self):
         return self.desc
 
+    def save(self, *args, **kwargs):
+        if self.img and (self.img.name.endswith('.jpg') or self.img.name.endswith('.jpeg')):
+            pilImage = Img.open(BytesIO(self.img.read()))
+            orientation = 0
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(pilImage._getexif().items())
+            if exif[orientation] == 3:
+                pilImage = pilImage.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                pilImage = pilImage.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                pilImage = pilImage.rotate(90, expand=True)
+            output = BytesIO()
+            pilImage.save(output, format='JPEG', quality=75)
+            output.seek(0)
+            self.img = File(output, self.img.name)
+        return super(ImageItem, self).save(*args, **kwargs)
+
 
 class Gallery(models.Model):
     big = models.CharField(max_length=255, default='', verbose_name="Заголовок")
-    text = models.CharField(max_length=255, default='', verbose_name="Текст после")
+    text = models.CharField(max_length=255, default='', blank=True, verbose_name="Текст после")
     btn = models.CharField(max_length=255, default='', verbose_name="Кнопка название")
     btn_url = models.CharField(max_length=255, default='', verbose_name="Кнопка ссылка")
 
@@ -202,7 +287,7 @@ class Gallery(models.Model):
 
 class GalleryItem(models.Model):
     img = models.ImageField(upload_to=get_image_path, null=True, verbose_name="Картинка")
-    name = models.CharField(max_length=255, default='', verbose_name="Текст при наведении")
+    name = models.CharField(max_length=255, default='', blank=True, verbose_name="Текст при наведении")
     order = models.IntegerField(default=1, verbose_name="Порядок вывода")
 
     class Meta:
@@ -214,7 +299,7 @@ class GalleryItem(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if self.img:
+        if self.img and (self.img.name.endswith('.jpg') or self.img.name.endswith('.jpeg')):
             pilImage = Img.open(BytesIO(self.img.read()))
             orientation = 0
             for orientation in ExifTags.TAGS.keys():
@@ -232,3 +317,37 @@ class GalleryItem(models.Model):
             output.seek(0)
             self.img = File(output, self.img.name)
         return super(GalleryItem, self).save(*args, **kwargs)
+
+
+class ColorItem(models.Model):
+    img = models.ImageField(upload_to=get_image_path, null=True, verbose_name="Картинка цвета")
+    name = models.CharField(max_length=255, default='', blank=True, verbose_name="Название цвета")
+    order = models.IntegerField(default=1, verbose_name="Порядок вывода")
+
+    class Meta:
+        verbose_name = "Цвет"
+        verbose_name_plural = "Варианты цветов"
+        ordering = ('order', 'name')
+
+    def __str__(self):
+        return f'{self.order} - {self.name}'
+
+    def save(self, *args, **kwargs):
+        if self.img and (self.img.name.endswith('.jpg') or self.img.name.endswith('.jpeg')):
+            pilImage = Img.open(BytesIO(self.img.read()))
+            orientation = 0
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(pilImage._getexif().items())
+            if exif[orientation] == 3:
+                pilImage = pilImage.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                pilImage = pilImage.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                pilImage = pilImage.rotate(90, expand=True)
+            output = BytesIO()
+            pilImage.save(output, format='JPEG', quality=75)
+            output.seek(0)
+            self.img = File(output, self.img.name)
+        return super(ColorItem, self).save(*args, **kwargs)

@@ -1,6 +1,7 @@
 {% extends "main.html" %}
+{% load thumbnail %}
 {% block main %}
-    
+
     <section id="desc-img-text-3col-3" class="pt-100 pb-100 light">
         <div class="container">
             <h2 class="mb-50"><strong>{{ group_item.name }}</strong></h2>
@@ -8,7 +9,18 @@
                 {% for item in product_list %}
                     <div class="col-md-4">
                         <div class="card padding-box border-box">
-                            <img src="/static/{{ item.img.url }}" alt="{{ item.img }}" class="card-img">
+                            <div id="screen">
+                                <img src="/static/{{ item.img.url }}" alt="{{ item.img }}" class="card-img">
+                            </div>
+                            <div class="mt-5 text-center">
+                                {% for image in item.colors %}
+                                    <img id="thumb-{{ forloop.counter }}" height="30px"
+                                         src="/static/{{ image.color.img.url }}"
+                                         alt="{{ image.color.img }}"
+                                         style="border-radius: 50%; cursor: pointer; border: ridge 2px #00C0FF;"
+                                         onclick="load_img(this, '{{ image.img.url }}')">
+                                {% endfor %}
+                            </div>
                             <div class="card-block">
                                 <h4 class="mt-20 mb-0"><strong>{{ item.name }}</strong></h4>
                                 <p class="mb-15 desc-text">{{ item.text }}</p>
@@ -31,4 +43,9 @@
         </div>
         <div class="bg"></div>
     </section>
+    <script>
+        function load_img(elem, url, id = 'screen') {
+            document.getElementById(id).innerHTML = `<img src="/static/${url}" alt="${url}" class="card-img">`;
+        }
+    </script>
 {% endblock %}

@@ -33,7 +33,7 @@
                     </div>
                     <div class="mt-30">
                         {% thumbnail product.img "x50" crop="center" as im %}
-                            <img id="thumb-0" style="cursor: pointer; margin-right: 10px; outline: 3px solid #00C0FF;"
+                            <img id="thumb-0" style="cursor: pointer; margin-right: 10px; outline: 3px ridge #00C0FF;"
                                  src="/static/{{ im.url }}" alt="{{ product.img }}" height="{{ im.height }}"
                                  onclick="load_img(this, '{{ product.img.url }}')">
                         {% endthumbnail %}
@@ -58,7 +58,7 @@
             for (var i = 0; i <= {{ product.img_many.count }}; i++) {
                 document.getElementById('thumb-' + i).style.outline = "";
             }
-            elem.style.outline = "3px solid #00C0FF";
+            elem.style.outline = "3px ridge #00C0FF";
         }
     </script>
 {% endblock %}
