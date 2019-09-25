@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/static/css/icons.css"/>
     <link rel="stylesheet" href="/static/css/style.css"/>
     <link rel="stylesheet" href="/static/css/owl.carousel.css"/>
-    <link rel="stylesheet" href="/static/css/magnific-popup.css" />
+    <link rel="stylesheet" href="/static/css/magnific-popup.css"/>
     <link rel="stylesheet" href="/static/css/custom.css"/>
     <link rel="stylesheet" href="/static/css/index.css"/>
 </head>
@@ -22,7 +22,8 @@
         <div class="navbar-header" style="position: absolute;">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"><span
                     class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-            <div class="navbar-brand"><a href="/"><img src="/static/{{ site.logo.url }}" alt="{{ site.title }}"></a></div>
+            <div class="navbar-brand"><a href="/"><img src="/static/{{ site.logo.url }}" alt="{{ site.title }}"></a>
+            </div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -37,7 +38,44 @@
 <div id="wrap">
     {% block main %}{% endblock %}
 </div>
-<footer></footer>
+<footer id="footer-text-icon-social" class="pt-50 pb-50 light">
+    <div class="container">
+        <div class="row flex-md-vmiddle">
+            <div class="col-md-4">
+                <p>© info@electis.ru</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <a href="#" class="icon-chevron-up icon-size-l icon-color"><i></i></a>
+            </div>
+            <div class="col-md-4 text-md-right">
+                {#                    <ul class="social-list">#}
+                {#                        <li>#}
+                {#                            <a href="#"><i class="icon-twitter icon-size-m"></i></a>#}
+                {#                        </li>#}
+                {#                        <li>#}
+                {#                            <a href="#"><i class="icon-facebook icon-size-m"></i></a>#}
+                {#                        </li>#}
+                {#                        <li>#}
+                {#                            <a href="#"><i class="icon-linkedin icon-size-m"></i></a>#}
+                {#                        </li>#}
+                {#                        <li>#}
+                {#                            <a href="#"><i class="icon-github-alt icon-size-m"></i></a>#}
+                {#                        </li>#}
+                {#                        <li>#}
+                {#                            <a href="#"><i class="icon-google-plus icon-size-m"></i></a>#}
+                {#                        </li>#}
+                {#                        <li>#}
+                {#                            <a href="#"><i class="icon-dribbble icon-size-m"></i></a>#}
+                {#                        </li>#}
+                {#                        <li>#}
+                {#                            <a href="#"><i class="icon-behance icon-size-m"></i></a>#}
+                {#                        </li>#}
+                {#                    </ul>#}
+            </div>
+        </div>
+    </div>
+    <div class="bg"></div>
+</footer>
 <div class="modal-container"></div>
 <script src="/static/js/jquery-2.1.4.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
@@ -45,7 +83,6 @@
 <script src="/static/js/owl.carousel.js"></script>
 <script src="/static/js/jquery.magnific-popup.min.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCByts0vn5uAYat3aXEeK0yWL7txqfSMX8"></script>
 <script src="https://cdn.jsdelivr.net/jquery.goodshare.js/3.2.8/goodshare.min.js"></script>
 <script src="/static/js/custom.js"></script>
 <script src="/static/js/index.js"></script>

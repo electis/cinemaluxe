@@ -1,7 +1,9 @@
 {% extends "main.html" %}
 {% load thumbnail %}
 {% block main %}
-
+    <div class="text-center">
+        <a href="/">Главная</a> > <a href="/groups/">Группы товаров</a> > {{ group_item.name }}
+    </div>
     <section id="desc-img-text-3col-3" class="pt-100 pb-100 light">
         <div class="container">
             <h2 class="mb-50"><strong>{{ group_item.name }}</strong></h2>

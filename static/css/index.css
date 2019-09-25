@@ -3,7 +3,6 @@
 	background-size: cover;
 	-webkit-background-size: cover;
 	background-repeat: no-repeat;
-	-webkit-background-repeat: no-repeat;
 	background-position: center center;
 	opacity: 0.1;
 }#desc-card-3col-2 {
@@ -15,7 +14,6 @@
 	background-size: cover;
 	-webkit-background-size: cover;
 	background-repeat: no-repeat;
-	-webkit-background-repeat: no-repeat;
 	background-position: center center;
 	opacity: 0.05;
 }#desc-img-text-3col-3 .bg {
@@ -23,7 +21,6 @@
 	background-size: 50px 50px;
 	-webkit-background-size: 50px 50px;
 	background-repeat: repeat-y;
-	-webkit-background-repeat: repeat-y;
 	background-position: top right;
 	opacity: 1;
 }
@@ -36,7 +33,6 @@
 	background-size: cover;
 	-webkit-background-size: cover;
 	background-repeat: no-repeat;
-	-webkit-background-repeat: no-repeat;
 	background-position: center center;
 	opacity: 0.05;
 }

@@ -64,3 +64,16 @@ class ProductView(View):
         context['menu'] = models.MenuItem.objects.all()
         context['product'] = models.ProductItem.objects.get(pk=pk)
         return render(request, 'product.html', context)
+
+
+class ContactView(View):
+
+    def get(self, request):
+        host = request.get_host()
+        path_list = [p for p in request.path.split('/') if p]
+        print(host, path_list, request.META.get('HTTP_USER_AGENT'), request.META.get('REMOTE_ADDR'), sep=' ~ ')
+        context = {}
+        context['site'] = models.Site.objects.first()
+        context['menu'] = models.MenuItem.objects.all()
+
+        return render(request, 'contact.html', context)

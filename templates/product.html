@@ -1,14 +1,33 @@
 {% extends "main.html" %}
 {% load thumbnail %}
 {% block main %}
+    <div class="text-center">
+        <a href="/">Главная</a> > <a href="/groups/">Группы товаров</a> > <a
+            href="/group/{{ product.group.pk }}">{{ product.group.name }}</a>
+        > {{ product.name }}
+    </div>
     <section id="desc-img-text-list" class="pt-150 pb-150 light">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-md-push-8">
                     <h2 class="mb-10"><strong>{{ product.name }}</strong></h2>
-                    <h4 class="mb-50">{{ product.text }}</h4>
+                    <h4 class="mb-30">{{ product.text }}</h4>
                     <p class="mb-20">{{ product.description }}</p>
                     <ul class="text-icon-list text-icon-list-sep">
+                        <li class="clearfix"><i
+                                class="icon-color-sampler icon-color icon-size-m icon-position-left"></i>
+                            <span>Цвета</span>
+                            <span class="pull-right">
+                            {% for image in product.colors %}
+                                <img id="color-{{ forloop.counter }}" height="30px"
+                                     src="/static/{{ image.color.img.url }}" alt="{{ image.color.img }}"
+                                     style="border-radius: 50%; cursor: pointer; border: ridge 2px #00C0FF;"
+                                     onclick="load_img('{{ image.img.url }}')">
+                            {% endfor %}
+
+                                </span>
+                        </li>
+
                         {% for field in product.field_many.all %}
                             <li class="clearfix"><i
                                     class="icon-{{ field.icon }} icon-color icon-size-m icon-position-left"></i>
@@ -35,14 +54,14 @@
                         {% thumbnail product.img "x50" crop="center" as im %}
                             <img id="thumb-0" style="cursor: pointer; margin-right: 10px; outline: 3px ridge #00C0FF;"
                                  src="/static/{{ im.url }}" alt="{{ product.img }}" height="{{ im.height }}"
-                                 onclick="load_img(this, '{{ product.img.url }}')">
+                                 onclick="load_img('{{ product.img.url }}', this)">
                         {% endthumbnail %}
                         {% for img in product.img_many.all %}
                             {% thumbnail img.img "x50" crop="center" as im %}
                                 <img id="thumb-{{ forloop.counter }}" style="cursor: pointer; margin-right: 10px"
                                      src="/static/{{ im.url }}"
                                      alt="{{ img.img }}" height="{{ im.height }}"
-                                     onclick="load_img(this, '{{ img.img.url }}')">
+                                     onclick="load_img('{{ img.img.url }}', this)">
                             {% endthumbnail %}
                         {% endfor %}
 
@@ -53,12 +72,14 @@
         <div class="bg"></div>
     </section>
     <script>
-        function load_img(elem, url, id = 'screen') {
+        function load_img(url, elem = null, id = 'screen') {
             document.getElementById(id).innerHTML = `<img src="/static/${url}" alt="${url}" class="screen">`;
             for (var i = 0; i <= {{ product.img_many.count }}; i++) {
                 document.getElementById('thumb-' + i).style.outline = "";
             }
-            elem.style.outline = "3px ridge #00C0FF";
+            if (elem) {
+                elem.style.outline = "3px ridge #00C0FF";
+            }
         }
     </script>
 {% endblock %}
