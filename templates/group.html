@@ -11,22 +11,41 @@
                 {% for item in product_list %}
                     <div class="col-md-4">
                         <div class="card padding-box border-box">
-                            <div id="screen">
-                                <img src="/static/{{ item.img.url }}" alt="{{ item.img }}" class="card-img">
-                            </div>
-                            <div class="mt-5 text-center">
-                                {% for image in item.colors %}
-                                    <img id="thumb-{{ forloop.counter }}" height="30px"
-                                         src="/static/{{ image.color.img.url }}"
-                                         alt="{{ image.color.img }}"
-                                         style="border-radius: 50%; cursor: pointer; border: ridge 2px #00C0FF;"
-                                         onclick="load_img(this, '{{ image.img.url }}')">
-                                {% endfor %}
-                            </div>
+                            {% thumbnail item.img "x500" crop="center" as im %}
+                                <a id="screen-{{ forloop.counter }}" href="/product/{{ item.pk }}">
+                                    <img src="/static/{{ im.url }}" alt="{{ item.img }}" class="card-img">
+                                </a>
+                            {% endthumbnail %}
+                            {#                            <div class="mt-5 text-center">#}
+                            {#                                {% for image in item.colors %}#}
+                            {#                                    {% thumbnail image.img "x500" crop="center" as im %}#}
+                            {#                            <img id="thumb-{{ forloop.counter }}" height="30px"#}
+                            {#                                 src="/static/{{ image.color.img.url }}"#}
+                            {#                                 alt="{{ image.color.img }}"#}
+                            {#                                 style="border-radius: 50%; cursor: pointer; border: ridge 2px #00C0FF;"#}
+                            {#                                 onclick="load_img2('{{ im.url }}', 'screen-{{ forloop.parentloop.counter }}')">#}
+                            {#                                    {% endthumbnail %}#}
+                            {#                                {% endfor %}#}
+                            {#                            </div>#}
                             <div class="card-block">
                                 <h4 class="mt-20 mb-0"><strong>{{ item.name }}</strong></h4>
                                 <p class="mb-15 desc-text">{{ item.text }}</p>
                                 <ul class="text-icon-list text-icon-list-sep">
+                                    <li class="clearfix"><i
+                                            class="icon-color-sampler icon-color icon-size-m icon-position-left"></i>
+                                        <span>Цвета</span>
+                                        <span class="pull-right">
+                                        {% for image in item.colors %}
+                                            {% thumbnail image.img "x500" crop="center" as im %}
+                                                <img id="thumb-{{ forloop.counter }}" height="30px"
+                                                     src="/static/{{ image.color.img.url }}"
+                                                     alt="{{ image.color.img }}"
+                                                     style="border-radius: 50%; cursor: pointer; border: ridge 2px #00C0FF;"
+                                                     onclick="load_img2('{{ im.url }}', 'screen-{{ forloop.parentloop.counter }}')">
+                                            {% endthumbnail %}
+                                        {% endfor %}
+                                        </span>
+                                    </li>
                                     {% for field in item.field_many.all %}
                                         <li class="clearfix"><i
                                                 class="icon-{{ field.icon }} icon-color icon-size-m icon-position-left"></i>
@@ -46,7 +65,7 @@
         <div class="bg"></div>
     </section>
     <script>
-        function load_img(elem, url, id = 'screen') {
+        function load_img2(url, id = 'screen') {
             document.getElementById(id).innerHTML = `<img src="/static/${url}" alt="${url}" class="card-img">`;
         }
     </script>

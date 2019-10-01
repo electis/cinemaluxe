@@ -64,8 +64,10 @@
                             <div class="col-md-4 mb-50">
                                 <div class="card light" style="background-color:#fff;">
                                     {% thumbnail item.img "350x350" crop="center" as im %}
-                                        <img src="/static/{{ im.url }}" alt="{{ item.img }}"
-                                             class="card-img-top">
+                                        <a href="/group/{{ item.pk }}">
+                                            <img src="/static/{{ im.url }}" alt="{{ item.img }}"
+                                                 class="card-img-top">
+                                        </a>
                                     {% endthumbnail %}
                                     <div class="card-block padding-box">
                                         <h3><strong>{{ item.name }}</strong></h3>
@@ -104,11 +106,13 @@
         <div class="container">
             <div class="row flex-md-vmiddle">
                 <div class="col-md-5 col-md-push-7">
-                    <img src="/static/images/illustration-5.png" srcset="/static/images/illustration-5@2x.png 2x" alt="illustration"
+                    <img src="/static/images/illustration-5.png" srcset="/static/images/illustration-5@2x.png 2x"
+                         alt="illustration"
                          class="screen mb-50">
                     <h2 class="mb-50">Ответим в ближайшее время!</h2>
                     <h3>Оставьте свои контактные данные и мы наилучшим образом исполним ваши пожелания!</h3>
-                    <p class="small text-muted">Введённые персональные данные не передаются никаким третьим лицам и используются только для обратной связи.</p>
+                    <p class="small text-muted">Введённые персональные данные не передаются никаким третьим лицам и
+                        используются только для обратной связи.</p>
                 </div>
                 <div class="col-md-6 col-md-pull-5">
                     <div class="border-box padding-box light" style="background-color:#fff">
@@ -146,7 +150,8 @@
                 </div>
             </div>
         </div>
-        <div class="bg bg-video" data-vide-bg="mp4: /static/images/video_bg, ogv: /static/images/video_bg, jpg: /static/images/video_bg"
+        <div class="bg bg-video"
+             data-vide-bg="mp4: /static/images/video_bg, ogv: /static/images/video_bg, jpg: /static/images/video_bg"
              data-vide-options="posterType: jpg"></div>
     </section>
 {% endblock %}
